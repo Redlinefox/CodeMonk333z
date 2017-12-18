@@ -1,3 +1,5 @@
+package LiveMarketData;
+
 import java.util.Random;
 
 import LiveMarketData.LiveMarketData;

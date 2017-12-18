@@ -1,3 +1,5 @@
+package OrderClient;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -6,13 +8,11 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Random;
 
-import OrderClient.Client;
-import OrderClient.NewOrderSingle;
 import OrderManager.Order;
 import Ref.Instrument;
 import Ref.Ric;
 
-public class SampleClient extends Mock implements Client{
+public class SampleClient extends MockClient.Mock implements Client{
 	private static final Random RANDOM_NUM_GENERATOR=new Random();
 	private static final Instrument[] INSTRUMENTS={new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
 	private static final HashMap OUT_QUEUE=new HashMap(); //queue for outgoing orders
@@ -32,7 +32,7 @@ public class SampleClient extends Mock implements Client{
 		Instrument instrument=INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
 		NewOrderSingle nos=new NewOrderSingle(size,instid,instrument);
 		
-		show("sendOrder: id="+id+" size="+size+" instrument="+INSTRUMENTS[instid].toString());
+		MockClient.Mock.show("sendOrder: id="+id+" size="+size+" instrument="+INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id,nos);
 		if(omConn.isConnected()){
 			ObjectOutputStream os=new ObjectOutputStream(omConn.getOutputStream());
@@ -47,23 +47,26 @@ public class SampleClient extends Mock implements Client{
 
 	@Override
 	public void sendCancel(int idToCancel){
-		show("sendCancel: id="+idToCancel);
+		MockClient.Mock.show("sendCancel: id="+idToCancel);
 		if(omConn.isConnected()){
 			//OMconnection.sendMessage("cancel",idToCancel);
 		}
 	}
 
 	@Override
-	public void partialFill(Order order){show(""+order);
+	public void partialFill(Order order){
+		MockClient.Mock.show(""+order);
 	}
 
 	@Override
-	public void fullyFilled(Order order){show(""+order);
+	public void fullyFilled(Order order){
+		MockClient.Mock.show(""+order);
 		OUT_QUEUE.remove(order.ClientOrderID);
 	}
 
 	@Override
-	public void cancelled(Order order){show(""+order);
+	public void cancelled(Order order){
+		MockClient.Mock.show(""+order);
 		OUT_QUEUE.remove(order.ClientOrderID);
 	}
 
@@ -106,7 +109,7 @@ public class SampleClient extends Mock implements Client{
 						case 'P':partialFill(message);break;
 						case 'F':fullyFilled(message);
 					}*/
-					show("");
+					MockClient.Mock.show("");
 				}
 			}
 		} catch (IOException|ClassNotFoundException e){
