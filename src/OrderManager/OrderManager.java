@@ -26,6 +26,7 @@ public class OrderManager {
 	private Socket[] orderRouters; //debugger will skip these lines as they dissapear at compile time into 'the object'/stack
 	private Socket[] clients;
 	private Socket trader;
+
 	private Socket connect(InetSocketAddress location) throws InterruptedException{
 		boolean connected=false;
 		int tryCounter=0;
@@ -142,7 +143,7 @@ public class OrderManager {
 		ObjectOutputStream os=new ObjectOutputStream(clients[o.clientid].getOutputStream());
 		//newOrderSingle acknowledgement
 		//ClOrdId is 11=
-		os.writeObject("11="+o.ClientOrderID+";35=A;39=0");
+		os.writeObject("11="+o.clientOrderID+";35=A;39=0");
 		os.flush();
 
 		price(id,o);
