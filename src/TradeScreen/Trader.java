@@ -65,7 +65,7 @@ public class Trader extends Thread implements TradeScreen{
 			//is=new ObjectInputStream( omConn.getInputStream());
 			InputStream s=omConn.getInputStream(); //if i try to create an objectinputstream before we have data it will block
 			// Created by EZ
-			OutputStream so=omConn.getOutputStream();
+			//OutputStream so=omConn.getOutputStream();
 			// run until told not to
 			while(isRunner()){
 				// check if Input Streams available
@@ -73,7 +73,7 @@ public class Trader extends Thread implements TradeScreen{
 					// Create ObjectInputStream
 					is=new ObjectInputStream(s);  //TODO check if we need to create each time. this will block if no data, but maybe we can still try to create it once instead of repeatedly
 					// Create ObjectOutputStream
-					os=new ObjectOutputStream(so);
+					//os=new ObjectOutputStream(so);
 					// Read object and make sure it matches either {newOrder, price, fill, cross}
 					api method=(api)is.readObject();
 					// Print out what is going on in Trader
