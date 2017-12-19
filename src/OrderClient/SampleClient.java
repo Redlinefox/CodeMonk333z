@@ -9,12 +9,13 @@ import java.util.HashMap;
 import java.util.Random;
 
 import OrderManager.Order;
+import Ref.EqInstrument;
 import Ref.Instrument;
 import Ref.Ric;
 
 public class SampleClient extends MockClient.Mock implements Client{
 	private static final Random RANDOM_NUM_GENERATOR=new Random();
-	private static final Instrument[] INSTRUMENTS={new Instrument(new Ric("VOD.L")), new Instrument(new Ric("BP.L")), new Instrument(new Ric("BT.L"))};
+	private static final Instrument[] INSTRUMENTS={new EqInstrument(17l), new EqInstrument(4l), new EqInstrument(7l)};
 	private static final HashMap OUT_QUEUE=new HashMap(); //queue for outgoing orders
 	private int id=0; //message id number
 	private Socket omConn; //connection to order manager

@@ -3,6 +3,7 @@ package TradeScreen;
 import MockClient.MockClient;
 import OrderManager.Order;
 import OrderRouter.SampleRouter;
+import Ref.EqInstrument;
 import Ref.Instrument;
 import Ref.Ric;
 import org.junit.*;
@@ -27,7 +28,7 @@ public class TraderTest {
         traderPort = 2020;
         ts = new Trader(traderName, traderPort);
         r = new Ric("testRic");
-        instr = new Instrument(r);
+        instr = new EqInstrument(1);
         o = new Order(1l, 1l, instr, 1l);
     }
 

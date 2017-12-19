@@ -3,6 +3,7 @@ package OrderManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Ref.EqInstrument;
 import Ref.Instrument;
 
 public class Order implements Serializable{
