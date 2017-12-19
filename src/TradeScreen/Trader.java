@@ -124,12 +124,12 @@ public class Trader extends Thread implements TradeScreen{
 
 	@Override
 	public void newOrder(long id, Order order) throws IOException, InterruptedException {
-		
+		newOrder((int) id, order);
 	}
 
 	@Override
 	public void acceptOrder(long id) throws IOException {
-
+		acceptOrder((int) id);
 	}
 
 	/**
