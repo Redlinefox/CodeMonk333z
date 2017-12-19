@@ -35,7 +35,7 @@ public class Trader extends Thread implements TradeScreen{
 					api method=(api)is.readObject();
 					System.out.println(Thread.currentThread().getName()+" calling: "+method);
 					switch(method){
-						case newOrder:newOrder(is.readInt(),(Order)is.readObject());break;
+						case newOrder:newOrder(is.readLong(),(Order)is.readObject());break;
 						case price:price(is.readInt(),(Order)is.readObject());break;
 						case cross:is.readInt();is.readObject();break; //TODO
 						case fill:is.readInt();is.readObject();break; //TODO
@@ -50,7 +50,7 @@ public class Trader extends Thread implements TradeScreen{
 			e.printStackTrace();
 		}
 	}
-	@Override
+	
 	public void newOrder(int id,Order order) throws IOException, InterruptedException {
 		//TODO the order should go in a visual grid, but not needed for test purposes
 		Thread.sleep(2134);
@@ -58,7 +58,7 @@ public class Trader extends Thread implements TradeScreen{
 		acceptOrder(id);
 	}
 
-	@Override
+	
 	public void acceptOrder(int id) throws IOException {
 		os=new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("acceptOrder");
@@ -67,14 +67,30 @@ public class Trader extends Thread implements TradeScreen{
 	}
 
 	@Override
-	public void sliceOrder(int id, int sliceSize) throws IOException {
+	public void newOrder(long id, Order order) throws IOException, InterruptedException {
+		
+	}
+
+	@Override
+	public void acceptOrder(long id) throws IOException {
+
+	}
+
+	@Override
+	public void sliceOrder(long id, long sliceSize) throws IOException {
 		os=new ObjectOutputStream(omConn.getOutputStream());
 		os.writeObject("sliceOrder");
-		os.writeInt(id);
-		os.writeInt(sliceSize);
+		os.writeLong(id);
+		os.writeLong(sliceSize);
 		os.flush();
 	}
+
 	@Override
+	public void price(long id, Order o) throws InterruptedException, IOException {
+
+	}
+
+	
 	public void price(int id,Order o) throws InterruptedException, IOException {
 		//TODO should update the trade screen
 		Thread.sleep(2134);

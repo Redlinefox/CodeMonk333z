@@ -5,16 +5,16 @@ import java.util.Date;
 
 public class Instrument implements Serializable{
 	long id;
-	String name;
-	Ric ric;
-	String isin;
-	String sedol;
-	String bbid;
+	private String name;
+	private Ric ric;
+	private String isin;
+	private String sedol;
+	private String bbid;
 	public Instrument(Ric ric){
 		this.ric=ric;
 	}
 	public String toString(){
-		return ric.ric;
+		return ric.getRic();
 	}
 }
 class EqInstrument extends Instrument{

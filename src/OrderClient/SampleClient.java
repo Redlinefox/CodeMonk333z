@@ -61,15 +61,17 @@ public class SampleClient extends MockClient.Mock implements Client{
 	@Override
 	public void fullyFilled(Order order){
 		MockClient.Mock.show(""+order);
-		OUT_QUEUE.remove(order.ClientOrderID);
+		OUT_QUEUE.remove(order.getClientOrderID());
 	}
 
 	@Override
 	public void cancelled(Order order){
 		MockClient.Mock.show(""+order);
-		OUT_QUEUE.remove(order.ClientOrderID);
+		OUT_QUEUE.remove(order.getClientOrderID());
 	}
-
+	
+	
+	//clean this up
 	enum methods{newOrderSingleAcknowledgement,dontKnow};
 	@Override
 	public void messageHandler(){

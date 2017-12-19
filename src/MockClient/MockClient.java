@@ -5,7 +5,7 @@ import OrderClient.SampleClient;
 import java.io.IOException;
 
 public class MockClient extends Thread{
-	int port;
+	private int port;
 	public MockClient(String name,int port){
 		this.port=port;
 		this.setName(name);
