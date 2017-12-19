@@ -6,10 +6,12 @@ import java.io.IOException;
 
 public class MockClient extends Thread{
 	private int port;
+
 	public MockClient(String name,int port){
 		this.port=port;
 		this.setName(name);
 	}
+
 	public void run(){
 		try {
 			SampleClient client=new SampleClient(port);
