@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ServerSocketFactory;
+import javax.swing.text.html.Option;
 
 import OrderManager.Order;
 import TradeScreen.TradeScreen;
@@ -81,7 +82,14 @@ public class Trader extends Thread implements TradeScreen{
 					// Call respective method depending on given input stream enum
 					switch(method) {
 						case newOrder:newOrder(is.readLong(),(Order)is.readObject());break;
-						case price:price(is.readInt(),(Order)is.readObject());break;
+						case price:
+							try{
+								price(is.readLong(),(Order)is.readObject());
+								} catch (OptionalDataException e)
+								{
+									e.printStackTrace();
+								}
+								break;
 						// These two not completed
 						case cross:is.readInt();is.readObject();break; //TODO
 						case fill:is.readInt();is.readObject();break; //TODO
@@ -164,6 +172,15 @@ public class Trader extends Thread implements TradeScreen{
 		//TODO should update the trade screen
 		Thread.sleep(2134);
 		// delegates work to sliceOrder
-		sliceOrder(id,orders.get(id).sizeRemaining()/2);
+		try {
+
+
+			sliceOrder(id, orders.get(id).sizeRemaining() / 2);
+		} catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
 	}
+
+
 }
