@@ -25,9 +25,9 @@ public class SampleClient extends MockClient.Mock implements Client{
 		omConn=new ServerSocket(port).accept();
 		System.out.println("OM connected to client port "+port);
 	}
-	
+
 	@Override
-	public int sendOrder(Object par0)throws IOException{
+	public int sendOrder()throws IOException{
 		int size=RANDOM_NUM_GENERATOR.nextInt(5000);
 		int instid=RANDOM_NUM_GENERATOR.nextInt(3);
 		Instrument instrument=INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
@@ -74,6 +74,7 @@ public class SampleClient extends MockClient.Mock implements Client{
 	
 	//clean this up
 	enum methods{newOrderSingleAcknowledgement,dontKnow};
+
 	@Override
 	public void messageHandler(){
 		
@@ -81,7 +82,7 @@ public class SampleClient extends MockClient.Mock implements Client{
 		try {
 			while(true){
 				//is.wait(); //this throws an exception!!
-				while(0<omConn.getInputStream().available()){
+				while(0 < omConn.getInputStream().available()){
 					is = new ObjectInputStream(omConn.getInputStream());
 					String fix=(String)is.readObject();
 					System.out.println(Thread.currentThread().getName()+" received fix message: "+fix);
@@ -91,18 +92,25 @@ public class SampleClient extends MockClient.Mock implements Client{
 					int OrdStatus;
 					methods whatToDo=methods.dontKnow;
 					//String[][] fixTagsValues=new String[fixTags.length][2];
-					for(int i=0;i<fixTags.length;i++){
+					for(int i=0; i<fixTags.length; i++){
 						String[] tag_value=fixTags[i].split("=");
 						switch(tag_value[0]){
-							case"11":OrderId=Integer.parseInt(tag_value[1]);break;
-							case"35":MsgType=tag_value[1].charAt(0);
-								if(MsgType=='A')whatToDo=methods.newOrderSingleAcknowledgement;
+							case "11":
+								OrderId=Integer.parseInt(tag_value[1]);
 								break;
-							case"39":OrdStatus=tag_value[1].charAt(0);break;
+							case "35":
+								MsgType=tag_value[1].charAt(0);
+								if(MsgType=='A')
+										whatToDo=methods.newOrderSingleAcknowledgement;
+								break;
+							case "39":
+								OrdStatus=tag_value[1].charAt(0);
+								break;
 						}
 					}
 					switch(whatToDo){
-						case newOrderSingleAcknowledgement:newOrderSingleAcknowledgement(OrderId);
+						case newOrderSingleAcknowledgement:
+							newOrderSingleAcknowledgement(OrderId);
 					}
 					
 					/*message=connection.getMessage();
@@ -112,7 +120,7 @@ public class SampleClient extends MockClient.Mock implements Client{
 						case 'P':partialFill(message);break;
 						case 'F':fullyFilled(message);
 					}*/
-					MockClient.Mock.show("");
+					MockClient.Mock.show("END OF WHILE in Message Handler");
 				}
 			}
 		} catch (IOException|ClassNotFoundException e){

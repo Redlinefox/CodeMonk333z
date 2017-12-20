@@ -11,45 +11,48 @@ import javax.swing.text.html.Option;
 import OrderManager.Order;
 import TradeScreen.TradeScreen;
 
-public class Trader extends Thread implements TradeScreen{
-	// maps an order id to an Order object
-	private Map<Integer,Order> orders=new HashMap<Integer,Order>();
-	// Socket used to connect clients and traders
-	private static Socket omConn;
-	// port where information will be accepted
-	private int port;
-	// Determines when Trader thread stops running
-	private boolean runner = true;
+public class Trader extends Thread implements TradeScreen {
+    // Socket used to connect clients and traders
+    private static Socket omConn;
+    ObjectInputStream is;
+    ObjectOutputStream os;
+    // maps an order id to an Order object
+    private Map<Integer, Order> orders = new HashMap<Integer, Order>();
+    // port where information will be accepted
+    private int port;
+    // Determines when Trader thread stops running
+    private boolean runner = true;
 
-	/**
-	 * Initialize Trader class
-	 * @param name
-	 * @param port
-	 */
-	public Trader(String name,int port){
-		this.setName(name);
-		this.port=port;
-	}
+    /**
+     * Initialize Trader class
+     *
+     * @param name
+     * @param port
+     */
+    public Trader(String name, int port) {
+        this.setName(name);
+        this.port = port;
+    }
 
-	public static Socket getOmConn() {
-		return omConn;
-	}
+    public static Socket getOmConn() {
+        return omConn;
+    }
 
-	public void setOmConn(int port) throws IOException {
-		omConn = ServerSocketFactory.getDefault().createServerSocket(port).accept();
-	}
+    public void setOmConn(int port) throws IOException {
+        omConn = ServerSocketFactory.getDefault().createServerSocket(port).accept();
+    }
 
-	public boolean isRunner() {
-		return runner;
-	}
+    public boolean isRunner() {
+        return runner;
+    }
 
-	public void setRunner(boolean runner) {
-		this.runner = runner;
-	}
+    public void setRunner(boolean runner) {
+        this.runner = runner;
+    }
 
-	public Map<Integer, Order> getOrders() {
-		return orders;
-	}
+    public Map<Integer, Order> getOrders() {
+        return orders;
+    }
 
 	public void setOrders(Map<Integer, Order> orders) {
 		this.orders = orders;
@@ -114,51 +117,51 @@ public class Trader extends Thread implements TradeScreen{
 		acceptOrder(id);
 	}
 
-	/**
-	 * Method called by newOrder
-	 * @param id
-	 * @throws IOException
-	 */
-	public void acceptOrder(int id) throws IOException {
-		// ObjectOutputStream writes to specified output stream, parameter.
-		os = new ObjectOutputStream(omConn.getOutputStream());
-		// writes "acceptOrder" to output stream os
-		os.writeObject("acceptOrder");
-		// writes id to output stream os
-		os.writeInt(id);
-		// flushes everything written to the outputstream, flushing the buffer holding data to be sent
-		os.flush();
-	}
+    /**
+     * Method called by newOrder
+     *
+     * @param id
+     * @throws IOException
+     */
+    public void acceptOrder(int id) throws IOException {
+        // ObjectOutputStream writes to specified output stream, parameter.
+        os = new ObjectOutputStream(omConn.getOutputStream());
+        // writes "acceptOrder" to output stream os
+        os.writeObject("acceptOrder");
+        // writes id to output stream os
+        os.writeInt(id);
+        // flushes everything written to the outputstream, flushing the buffer holding data to be sent
+        os.flush();
+    }
 
-	@Override
-	public void newOrder(long id, Order order) throws IOException, InterruptedException {
-		newOrder((int) id, order);
-	}
+    @Override
+    public void newOrder(long id, Order order) throws IOException, InterruptedException {
+        newOrder((int) id, order);
+    }
 
-	@Override
-	public void acceptOrder(long id) throws IOException {
-		acceptOrder((int) id);
-	}
+    @Override
+    public void acceptOrder(long id) throws IOException {
+        acceptOrder((int) id);
+    }
 
-	/**
-	 * 
-	 * @param id
-	 * @param sliceSize
-	 * @throws IOException
-	 */
-	@Override
-	public void sliceOrder(long id, long sliceSize) throws IOException {
-		// ObjectOutputStream writes to specified output stream, parameter.
-		os=new ObjectOutputStream(omConn.getOutputStream());
-		// writes "sliceOrder" to output stream os
-		os.writeObject("sliceOrder");
-		// writes id to output stream os
-		os.writeLong(id);
-		// writes sliceSize to output stream os
-		os.writeLong(sliceSize);
-		// flushes everything written to the outputstream, flushing the buffer holding data to be sent
-		os.flush();
-	}
+    /**
+     * @param id
+     * @param sliceSize
+     * @throws IOException
+     */
+    @Override
+    public void sliceOrder(long id, long sliceSize) throws IOException {
+        // ObjectOutputStream writes to specified output stream, parameter.
+        os = new ObjectOutputStream(omConn.getOutputStream());
+        // writes "sliceOrder" to output stream os
+        os.writeObject("sliceOrder");
+        // writes id to output stream os
+        os.writeLong(id);
+        // writes sliceSize to output stream os
+        os.writeLong(sliceSize);
+        // flushes everything written to the outputstream, flushing the buffer holding data to be sent
+        os.flush();
+    }
 
 	/**
 	 * Links the order with specified id using sliceOrder
