@@ -133,7 +133,7 @@ public class OrderManager {
 		int tryCounter=0;
 		while(!connected&&tryCounter<600){
 			try{
-				Socket s=new Socket(location.getHostName(),location.getPort());
+				Socket s=new Socket(location.getAddress(),location.getPort());
 				s.setKeepAlive(true);
 				return s;
 			}catch (IOException e) {

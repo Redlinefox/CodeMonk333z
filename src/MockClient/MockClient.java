@@ -4,7 +4,7 @@ import OrderClient.SampleClient;
 
 import java.io.IOException;
 
-public class MockClient extends Thread{
+public class MockClient extends Thread implements MockClientInterface{
 	private int port;
 
 	public MockClient(String name,int port){
@@ -12,6 +12,7 @@ public class MockClient extends Thread{
 		this.setName(name);
 	}
 
+	@Override
 	public void run(){
 		try {
 			SampleClient client=new SampleClient(port);

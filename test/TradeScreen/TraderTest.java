@@ -5,9 +5,9 @@ import OrderManager.Order;
 import OrderRouter.SampleRouter;
 import Ref.EqInstrument;
 import Ref.Instrument;
-import Ref.LoggingManager;
+//import Ref.LoggingManager;
 import Ref.Ric;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.junit.*;
 import org.junit.Assert;
 
@@ -33,7 +33,7 @@ public class TraderTest {
         instr = new EqInstrument(1);
         o = new Order(1l, 1l, instr, 2l);
         
-        LoggingManager.initialiseLogging();
+//        LoggingManager.initialiseLogging();
     }
 
     @After

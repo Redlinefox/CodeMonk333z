@@ -44,7 +44,7 @@ public class Order implements Serializable{
 	}
 
     /**
-     * Adds a new slice into array list of slices 
+     * Adds a new slice into array list of slices
      * @param sliceSize
      * @return index of newly added slice
      */
@@ -109,7 +109,7 @@ public class Order implements Serializable{
 			OrdStatus='1';
 		}
 	}
-	
+
 	public void cross(Order matchingOrder) {
         for(Order slice:slices) {
             for (Order matchingSlice : matchingOrder.slices) {
@@ -140,10 +140,10 @@ public class Order implements Serializable{
             }
             //no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
             if(slice.sizeRemaining()>0)break;
-            
+
         }
     }
-	
+
     /*
 	public void cross(Order matchingOrder){
 		//pair slices first and then parent
@@ -174,7 +174,7 @@ public class Order implements Serializable{
 					matchingOrder.createFill(sze, initialMarketPrice);
 				}else{
 					slice.createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);					
+					matchingOrder.createFill(mParent, initialMarketPrice);
 				}
 			}
 			//no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
@@ -204,7 +204,7 @@ public class Order implements Serializable{
 					matchingOrder.createFill(sze, initialMarketPrice);
 				}else{
 					createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);					
+					matchingOrder.createFill(mParent, initialMarketPrice);
 				}
 			}
 		}
@@ -215,9 +215,10 @@ public class Order implements Serializable{
 		//state=cancelled
 	}
 
-	public long getId() {
-		return id;
-	}
+    //Getters and Setters
+    public long getId() {
+        return id;
+    }
 
 	public void setId(long id) {
 		this.id = id;

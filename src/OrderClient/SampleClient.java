@@ -22,19 +22,23 @@ public class SampleClient extends MockClient.Mock implements Client{
 	private int id=0; //message id number
 	private Socket omConn; //connection to order manager
 	private Logger log = Logger.getLogger(SampleClient.class.getName());
-	
+
 	public SampleClient(int port) throws IOException{
 		//OM will connect to us
 		omConn=new ServerSocket(port).accept();
 		log.info("OM connected to client port "+port);
 	}
 
-	@Override
-	public int sendOrder()throws IOException{
-		int size=RANDOM_NUM_GENERATOR.nextInt(5000);
-		int instid=RANDOM_NUM_GENERATOR.nextInt(3);
-		Instrument instrument=INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
-		NewOrderSingle nos=new NewOrderSingle(size,instid,instrument);
+    public static HashMap getOutQueue() {
+        return OUT_QUEUE;
+    }
+
+    @Override
+    public int sendOrder() throws IOException {
+        int size = RANDOM_NUM_GENERATOR.nextInt(5000);
+        int instid = RANDOM_NUM_GENERATOR.nextInt(3);
+        Instrument instrument = INSTRUMENTS[RANDOM_NUM_GENERATOR.nextInt(INSTRUMENTS.length)];
+        NewOrderSingle nos = new NewOrderSingle(size, instid, instrument);
 
 		MockClient.Mock.show("sendOrder: id="+id+" size="+size+" instrument="+INSTRUMENTS[instid].toString());
 		OUT_QUEUE.put(id,nos);
