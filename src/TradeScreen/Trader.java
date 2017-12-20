@@ -122,6 +122,10 @@ public class Trader extends Thread implements TradeScreen {
      * @throws IOException
      */
     public void acceptOrder(int id) throws IOException {
+        // Guard to catch null pointer for omConn
+        if (omConn == null) {
+            return;
+        }
         // ObjectOutputStream writes to specified output stream, parameter.
         os = new ObjectOutputStream(omConn.getOutputStream());
         // writes "acceptOrder" to output stream os

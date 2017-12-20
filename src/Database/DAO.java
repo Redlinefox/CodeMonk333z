@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAO {
-    private final String QUERY = "ALTER SESSION SET current_schema = REFDATA";
-    private final String QUERY1 = "SELECT NAME FROM INSTRUMENT WHERE ID=1";
+   // private final String QUERY = "ALTER SESSION SET current_schema = REFDATA";
+    private final String QUERY1 = "SELECT NAME FROM REFDATA.INSTRUMENT WHERE ID=1";
 //    private final String QUERY = "SELECT * FROM DEPARTMENT_TAMPA08";
 
     /*
@@ -17,10 +17,10 @@ public class DAO {
         Connection connection = null;
         try {
             connection = DBConnectionManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(QUERY);
+           // PreparedStatement statement = connection.prepareStatement(QUERY);
             PreparedStatement statement1 = connection.prepareStatement(QUERY1);
 //            statement.setInt(1,1);
-            runQueryAlter(statement);
+//            runQueryAlter(statement);
             runQuery(statement1);
         } catch (SQLException e) {
             e.printStackTrace();
