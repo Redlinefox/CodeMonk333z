@@ -5,7 +5,9 @@ import OrderManager.Order;
 import OrderRouter.SampleRouter;
 import Ref.EqInstrument;
 import Ref.Instrument;
+import Ref.LoggingManager;
 import Ref.Ric;
+import org.apache.log4j.Logger;
 import org.junit.*;
 import org.junit.Assert;
 
@@ -29,7 +31,9 @@ public class TraderTest {
         ts = new Trader(traderName, traderPort);
         r = new Ric("testRic");
         instr = new EqInstrument(1);
-        o = new Order(1l, 1l, instr, 1l);
+        o = new Order(1l, 1l, instr, 2l);
+        
+        LoggingManager.initialiseLogging();
     }
 
     @After
@@ -46,8 +50,8 @@ public class TraderTest {
 
     @Test
     public void run() throws InterruptedException {
+        assertNull(ts.getOmConn());
         ts.start();
-        Thread.sleep(5000);
         ts.setRunner(false);
     }
 
@@ -58,34 +62,10 @@ public class TraderTest {
         ts.newOrder(5, o);
         assertEquals(1, ts.getOrders().size());
     }
-
     @Test
-    public void acceptOrder() throws IOException {
-        //start sample clients
-        MockClient c1=new MockClient("Client 1",2000);
-        c1.start();
-        (new MockClient("Client 2",2001)).start();
-
-        //start sample routers
-        (new SampleRouter("Router LSE",2010)).start();
-        (new SampleRouter("Router BATE",2011)).start();
-        Trader tsorder = new Trader("TradeScreen.Trader James",2020);
-        InetSocketAddress trader=new InetSocketAddress("localhost",2020);
-        tsorder.start();
-        tsorder.acceptOrder(1);
-        assertEquals(0, 0);
-    }
-
-    @Test
-    public void sliceOrder() throws IOException {
-        Trader tsorder = new Trader("TradeScreen.Trader James",2020);
-        tsorder.start();
-        tsorder.sliceOrder(1, 1);
-        assertEquals(0, 0);
-    }
-
-    @Test
-    public void price() {
-        
+    public void price() throws IOException, InterruptedException {
+        assertEquals(0, o.getSlices().size());
+        ts.price(1l, o);
+        assertEquals(1, o.getSlices().size());
     }
 }
