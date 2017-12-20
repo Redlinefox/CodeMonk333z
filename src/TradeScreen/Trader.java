@@ -57,9 +57,7 @@ public class Trader extends Thread implements TradeScreen {
 	public void setOrders(Map<Integer, Order> orders) {
 		this.orders = orders;
 	}
-	
-	ObjectInputStream  is;
-	ObjectOutputStream os;
+
 	public void run(){
 		//OM will connect to us
 		try {
