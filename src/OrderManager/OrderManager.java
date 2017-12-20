@@ -13,10 +13,12 @@ import java.util.Map;
 
 import Database.Database;
 import LiveMarketData.LiveMarketData;
+import MockClient.Mock;
 import OrderClient.NewOrderSingle;
 import OrderRouter.Router;
 import OrderRouter.Router.api;
 import TradeScreen.TradeScreen;
+import org.apache.log4j.Logger;
 
 public class OrderManager {
 	private static LiveMarketData liveMarketData;
@@ -30,6 +32,7 @@ public class OrderManager {
 	private Socket client;
 	private Socket router;
 	boolean condition = true;
+	private Logger log = Logger.getLogger(OrderManager.class.getName());
 
 	//@param args the command line arguments
 	public OrderManager(InetSocketAddress[] orderRouters, InetSocketAddress[] clients,InetSocketAddress trader,
@@ -65,13 +68,16 @@ public class OrderManager {
 				if(0<client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is=new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method=(String)is.readObject();
-					System.out.println(Thread.currentThread().getName()+" calling "+method);
+					log.info(Thread.currentThread().getName()+" calling "+method);
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
-						case "newOrderSingle":
+						case "newOrderSingle": 
 							newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());
 							break;
 						//TODO create a default case which errors with "Unknown message type"+...
+						default:
+							log.error("Unknown message type for " + method);
+							break;
 					}
 				}
 			}
@@ -83,7 +89,7 @@ public class OrderManager {
 				if(0<router.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is=new ObjectInputStream(router.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
 					String method=(String)is.readObject();
-					System.out.println(Thread.currentThread().getName()+" calling "+method);
+					log.info(Thread.currentThread().getName()+" calling "+method);
 					switch(method){ //determine the type of message and process it
 						case "bestPrice":
 							int OrderId=is.readInt();
@@ -97,6 +103,9 @@ public class OrderManager {
 						case "newFill":
 							newFill(is.readInt(),is.readInt(),is.readInt(),is.readDouble());
 							break;
+						default:
+							log.error("Unknown message type for " + method);
+							break;
 					}
 				}
 			}
@@ -106,7 +115,7 @@ public class OrderManager {
 			if(0<this.trader.getInputStream().available()){
 				ObjectInputStream is=new ObjectInputStream(this.trader.getInputStream());
 				String method=(String)is.readObject();
-				System.out.println(Thread.currentThread().getName()+" calling "+method);
+				log.info(Thread.currentThread().getName()+" calling "+method);
 				switch(method){
 					case "acceptOrder":
 						acceptOrder(is.readInt())
@@ -132,7 +141,7 @@ public class OrderManager {
 				tryCounter++;
 			}
 		}
-		System.out.println("Failed to connect to "+location.toString());
+		log.info("Failed to connect to "+location.toString());
 		return null;
 	}
 	
@@ -160,7 +169,7 @@ public class OrderManager {
 	public void acceptOrder(int id) throws IOException{
 		Order o=orders.get(id);
 		if(o.getOrdStatus()!='A'){ //Pending New
-			System.out.println("error accepting order that has already been accepted");
+			log.info("error accepting order that has already been accepted");
 			return;
 		}
 		o.setOrdStatus('0'); //New
@@ -176,7 +185,7 @@ public class OrderManager {
 		//slice the order. We have to check this is a valid size.
 		//Order has a list of slices, and a list of fills, each slice is a child order and each fill is associated with either a child order or the original order
 		if(sliceSize>o.sizeRemaining()-o.sliceSizes()){
-			System.out.println("error sliceSize is bigger than remaining size to be filled on the order");
+			log.info("error sliceSize is bigger than remaining size to be filled on the order");
 			return;
 		}
 		long sliceId=o.newSlice(sliceSize);

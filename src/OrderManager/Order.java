@@ -31,19 +31,33 @@ public class Order implements Serializable{
 		fills=new ArrayList<Fill>();
 		slices=new ArrayList<Order>();
 	}
-	
+
+    /**
+     * Go through each order inside slices array and return size of all of these orders
+     * @return
+     */
 	public long sliceSizes(){
 		int totalSizeOfSlices=0;
 		for(Order c:slices)
 			totalSizeOfSlices+=c.size;
 		return totalSizeOfSlices;
 	}
-	
+
+    /**
+     * Adds a new slice into array list of slices 
+     * @param sliceSize
+     * @return index of newly added slice
+     */
 	public long newSlice(long sliceSize){
 		slices.add(new Order(id,clientOrderID,instrument,sliceSize));
 		return slices.size()-1;
 	}
-	
+
+    /**
+     * Gets size of each fill for every order in slices list
+     * Essentially returns how filled the order is
+     * @return
+     */
 	public int sizeFilled(){
 		int filledSoFar=0;
 		for(Fill f:fills){
@@ -54,21 +68,39 @@ public class Order implements Serializable{
 		}
 		return filledSoFar;
 	}
-	
+
+    /**
+     * Returns how much size you have left that is not filled
+     * @return
+     */
 	public long sizeRemaining(){
 		return size-sizeFilled();
 	}
-	
 
+    /**
+     * Returns the average price of fill for every order
+     * @return
+     */
 	private float price(){
 		//TODO this is buggy as it doesn't take account of slices. Let them fix it
+        //^Potentially Fixed by Ezra and Denesh
 		float sum=0;
 		for(Fill fill:fills){
 			sum+=fill.getPrice();
 		}
+        for(Order c:slices){
+            sum+=c.price();
+        }
 		return sum/fills.size();
 	}
-	
+
+    /**
+     * Adds a new fill into the list of fills for an order
+     * Changes OrdStatus based on how filled the order is
+     * 1: partially filled / 2: completely filled
+     * @param size
+     * @param price
+     */
 	public void createFill(long size,double price){
 		fills.add(new Fill(size,price));
 		if(sizeRemaining()==0){
@@ -78,6 +110,41 @@ public class Order implements Serializable{
 		}
 	}
 	
+	public void cross(Order matchingOrder) {
+        for(Order slice:slices) {
+            for (Order matchingSlice : matchingOrder.slices) {
+                // Records how filled the matchingSlice is
+                long msze = matchingSlice.sizeRemaining();
+                long sze = slice.sizeRemaining();
+                if(sze<=msze) {
+                    slice.createFill(sze,initialMarketPrice);
+                    matchingSlice.createFill(sze, initialMarketPrice);
+                } else {
+                    slice.createFill(msze,initialMarketPrice);
+                    matchingSlice.createFill(msze, initialMarketPrice);
+                }
+            }
+            // Records how many unfilled sizes you have
+            long sze=slice.sizeRemaining();
+            // Stores how unfilled matchingOrder is
+            long mParent=matchingOrder.sliceSizes()-matchingOrder.sizeRemaining();
+
+            if(sze>0 && mParent>0){
+                if(sze>=mParent){
+                    slice.createFill(sze,initialMarketPrice);
+                    matchingOrder.createFill(sze, initialMarketPrice);
+                }else{
+                    slice.createFill(mParent,initialMarketPrice);
+                    matchingOrder.createFill(mParent, initialMarketPrice);
+                }
+            }
+            //no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
+            if(slice.sizeRemaining()>0)break;
+            
+        }
+    }
+	
+    /*
 	public void cross(Order matchingOrder){
 		//pair slices first and then parent
 		for(Order slice:slices){
@@ -142,6 +209,7 @@ public class Order implements Serializable{
 			}
 		}
 	}
+	*/
 	
 	private void cancel(){
 		//state=cancelled

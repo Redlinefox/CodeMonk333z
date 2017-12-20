@@ -1,8 +1,11 @@
 package MockClient;
 
+import org.apache.log4j.Logger;
+
 public class Mock{
 	public static void show(String out){
-		System.out.println(Thread.currentThread().getName()+":"+out);
-		System.out.println("IN MOCK ");
+		Logger log = Logger.getLogger(Mock.class.getName());
+		log.info(Thread.currentThread().getName()+":"+out);
+		log.info("IN MOCK ");
 	}
 }

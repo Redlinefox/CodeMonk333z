@@ -8,12 +8,14 @@ import java.util.Map;
 import javax.net.ServerSocketFactory;
 import javax.swing.text.html.Option;
 
+import MockClient.Mock;
 import OrderManager.Order;
 import TradeScreen.TradeScreen;
+import org.apache.log4j.Logger;
 
 public class Trader extends Thread implements TradeScreen {
     // Socket used to connect clients and traders
-    private static Socket omConn;
+    private Socket omConn;
     ObjectInputStream is;
     ObjectOutputStream os;
     // maps an order id to an Order object
@@ -22,6 +24,7 @@ public class Trader extends Thread implements TradeScreen {
     private int port;
     // Determines when Trader thread stops running
     private boolean runner = true;
+    private Logger log = Logger.getLogger(Trader.class.getName());
 
     /**
      * Initialize Trader class
@@ -34,7 +37,7 @@ public class Trader extends Thread implements TradeScreen {
         this.port = port;
     }
 
-    public static Socket getOmConn() {
+    public Socket getOmConn() {
         return omConn;
     }
 
@@ -79,7 +82,7 @@ public class Trader extends Thread implements TradeScreen {
 					// Read object and make sure it matches either {newOrder, price, fill, cross}
 					api method=(api)is.readObject();
 					// Print out what is going on in Trader
-					System.out.println(Thread.currentThread().getName()+" calling: "+method);
+					log.info(Thread.currentThread().getName()+" calling: "+method);
 					// Call respective method depending on given input stream enum
 					switch(method) {
 						case newOrder:
@@ -90,7 +93,7 @@ public class Trader extends Thread implements TradeScreen {
 								price(is.readLong(),(Order)is.readObject());
 								} catch (OptionalDataException e)
 								{
-									e.printStackTrace();
+									log.error("Error description",e);
 								}
 								break;
 						// These two not completed
@@ -102,12 +105,13 @@ public class Trader extends Thread implements TradeScreen {
 						    break; //TODO
 					}
 				}else{
-					//System.out.println("TradeScreen.Trader Waiting for data to be available - sleep 1s");
+					//log.info("TradeScreen.Trader Waiting for data to be available - sleep 1s");
 					Thread.sleep(1000);
 				}
 			}
 		} catch (IOException | ClassNotFoundException | InterruptedException e) {
-			e.printStackTrace();
+			// TODO Auto-generated catch block
+			log.error("Error description",e);
 		}
 	}
 	
@@ -137,7 +141,7 @@ public class Trader extends Thread implements TradeScreen {
         os.writeObject("acceptOrder");
         // writes id to output stream os
         os.writeInt(id);
-        // flushes everything written to the outputstream, flushing the buffer holding data to be sent
+        // flushes everything written to the output stream, flushing the buffer holding data to be sent
         os.flush();
     }
 
@@ -183,12 +187,10 @@ public class Trader extends Thread implements TradeScreen {
 		Thread.sleep(2134);
 		// delegates work to sliceOrder
 		try {
-
-
-			sliceOrder(id, orders.get(id).sizeRemaining() / 2);
+			sliceOrder(id, orders.get(o.getId()).sizeRemaining() / 2);
 		} catch (NullPointerException e)
 		{
-			e.printStackTrace();
+			log.error("Error description",e);
 		}
 	}
 

@@ -8,10 +8,12 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Random;
 
+import MockClient.Mock;
 import OrderManager.Order;
 import Ref.EqInstrument;
 import Ref.Instrument;
 import Ref.Ric;
+import org.apache.log4j.Logger;
 
 public class SampleClient extends MockClient.Mock implements Client{
 	private static final Random RANDOM_NUM_GENERATOR=new Random();
@@ -19,11 +21,12 @@ public class SampleClient extends MockClient.Mock implements Client{
 	private static final HashMap OUT_QUEUE=new HashMap(); //queue for outgoing orders
 	private int id=0; //message id number
 	private Socket omConn; //connection to order manager
-
+	private Logger log = Logger.getLogger(SampleClient.class.getName());
+	
 	public SampleClient(int port) throws IOException{
 		//OM will connect to us
 		omConn=new ServerSocket(port).accept();
-		System.out.println("OM connected to client port "+port);
+		log.info("OM connected to client port "+port);
 	}
 
 	@Override
@@ -85,7 +88,7 @@ public class SampleClient extends MockClient.Mock implements Client{
 				while(0 < omConn.getInputStream().available()){
 					is = new ObjectInputStream(omConn.getInputStream());
 					String fix=(String)is.readObject();
-					System.out.println(Thread.currentThread().getName()+" received fix message: "+fix);
+					log.info(Thread.currentThread().getName()+" received fix message: "+fix);
 					String[] fixTags=fix.split(";");
 					int OrderId=-1;
 					char MsgType;
@@ -130,7 +133,7 @@ public class SampleClient extends MockClient.Mock implements Client{
 	}
 
 	void newOrderSingleAcknowledgement(int OrderId){
-		System.out.println(Thread.currentThread().getName()+" called newOrderSingleAcknowledgement");
+		log.info(Thread.currentThread().getName()+" called newOrderSingleAcknowledgement");
 		//do nothing, as not recording so much state in the NOS class at present
 	}
 /*listen for connections
