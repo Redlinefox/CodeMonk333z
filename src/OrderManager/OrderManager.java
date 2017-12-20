@@ -60,7 +60,7 @@ public class OrderManager {
 		//
 		while(condition){
 			//we want to use the arrayindex as the clientId, so use traditional for loop instead of foreach
-			for(clientId=0 ;clientId <this.clients.length ; clientId++){ //check if we have data on any of the sockets
+			for(clientId=0; clientId <this.clients.length ; clientId++){ //check if we have data on any of the sockets
 				client=this.clients[clientId];
 				if(0<client.getInputStream().available()){ //if we have part of a message ready to read, assuming this doesn't fragment messages
 					ObjectInputStream is=new ObjectInputStream(client.getInputStream()); //create an object inputstream, this is a pretty stupid way of doing it, why not create it once rather than every time around the loop
@@ -68,7 +68,9 @@ public class OrderManager {
 					System.out.println(Thread.currentThread().getName()+" calling "+method);
 					switch(method){ //determine the type of message and process it
 						//call the newOrder message with the clientId and the message (clientMessageId,NewOrderSingle)
-						case "newOrderSingle": newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());break;
+						case "newOrderSingle":
+							newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());
+							break;
 						//TODO create a default case which errors with "Unknown message type"+...
 					}
 				}
@@ -106,8 +108,11 @@ public class OrderManager {
 				String method=(String)is.readObject();
 				System.out.println(Thread.currentThread().getName()+" calling "+method);
 				switch(method){
-					case "acceptOrder":acceptOrder(is.readInt());break;
-					case "sliceOrder":sliceOrder(is.readInt(), is.readInt());
+					case "acceptOrder":
+						acceptOrder(is.readInt())
+						;break;
+					case "sliceOrder":
+						sliceOrder(is.readInt(), is.readInt());
 				}
 			}
 		}
@@ -185,9 +190,12 @@ public class OrderManager {
 
 	private void internalCross(int id, Order o) throws IOException{
 		for(Map.Entry<Integer, Order> entry:orders.entrySet()){
-			if(entry.getKey().intValue()==id)continue;
+			if(entry.getKey().intValue()==id)
+				continue;
 			Order matchingOrder=entry.getValue();
-			if(!(matchingOrder.getInstrument().equals(o.getInstrument())&&matchingOrder.getInitialMarketPrice()==o.getInitialMarketPrice()))continue;
+			if(!(matchingOrder.getInstrument().equals(o.getInstrument())&&
+					matchingOrder.getInitialMarketPrice()==o.getInitialMarketPrice()))
+				continue;
 			//TODO add support here and in Order for limit orders
 			long sizeBefore=o.sizeRemaining();
 			o.cross(matchingOrder);

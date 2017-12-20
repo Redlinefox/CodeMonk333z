@@ -17,7 +17,9 @@ public class Order implements Serializable{
 	private double[]bestPrices;
 	private Instrument instrument;
 	private double initialMarketPrice;
-	
+	private char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
+
+
 	private ArrayList<Order>slices;
 	private ArrayList<Fill>fills;
 
@@ -32,7 +34,8 @@ public class Order implements Serializable{
 	
 	public long sliceSizes(){
 		int totalSizeOfSlices=0;
-		for(Order c:slices)totalSizeOfSlices+=c.size;
+		for(Order c:slices)
+			totalSizeOfSlices+=c.size;
 		return totalSizeOfSlices;
 	}
 	
@@ -44,7 +47,7 @@ public class Order implements Serializable{
 	public int sizeFilled(){
 		int filledSoFar=0;
 		for(Fill f:fills){
-			filledSoFar+=f.getPrice();
+			filledSoFar+=f.getSize();		//changed to getSize because it makes more sense, need size for filling
 		}
 		for(Order c:slices){
 			filledSoFar+=c.sizeFilled();
@@ -56,8 +59,7 @@ public class Order implements Serializable{
 		return size-sizeFilled();
 	}
 	
-	private char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
-	//Status state;
+
 	private float price(){
 		//TODO this is buggy as it doesn't take account of slices. Let them fix it
 		float sum=0;
@@ -79,11 +81,13 @@ public class Order implements Serializable{
 	public void cross(Order matchingOrder){
 		//pair slices first and then parent
 		for(Order slice:slices){
-			if(slice.sizeRemaining()==0)continue;
+			if(slice.sizeRemaining()==0)
+				continue;
 			//TODO could optimise this to not start at the beginning every time
 			for(Order matchingSlice:matchingOrder.slices){
 				long msze=matchingSlice.sizeRemaining();
-				if(msze==0)continue;
+				if(msze==0)
+					continue;
 				long sze=slice.sizeRemaining();
 				if(sze<=msze){
 					 slice.createFill(sze,initialMarketPrice);
@@ -94,6 +98,7 @@ public class Order implements Serializable{
 				slice.createFill(msze,initialMarketPrice);
 				matchingSlice.createFill(msze, initialMarketPrice);
 			}
+
 			long sze=slice.sizeRemaining();
 			long mParent=matchingOrder.sizeRemaining()-matchingOrder.sliceSizes();
 			if(sze>0 && mParent>0){
@@ -106,12 +111,14 @@ public class Order implements Serializable{
 				}
 			}
 			//no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
-			if(slice.sizeRemaining()>0)break;
+			if(slice.sizeRemaining()>0)
+				break;
 		}
 		if(sizeRemaining()>0){
 			for(Order matchingSlice:matchingOrder.slices){
 				long msze=matchingSlice.sizeRemaining();
-				if(msze==0)continue;
+				if(msze==0)
+					continue;
 				long sze=sizeRemaining();
 				if(sze<=msze){
 					 createFill(sze,initialMarketPrice);

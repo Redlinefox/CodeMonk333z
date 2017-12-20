@@ -82,7 +82,9 @@ public class Trader extends Thread implements TradeScreen {
 					System.out.println(Thread.currentThread().getName()+" calling: "+method);
 					// Call respective method depending on given input stream enum
 					switch(method) {
-						case newOrder:newOrder(is.readLong(),(Order)is.readObject());break;
+						case newOrder:
+						    newOrder(is.readLong(),(Order)is.readObject());
+						    break;
 						case price:
 							try{
 								price(is.readLong(),(Order)is.readObject());
@@ -92,8 +94,12 @@ public class Trader extends Thread implements TradeScreen {
 								}
 								break;
 						// These two not completed
-						case cross:is.readInt();is.readObject();break; //TODO
-						case fill:is.readInt();is.readObject();break; //TODO
+						case cross:
+						    is.readInt();is.readObject();
+						    break; //TODO
+						case fill:
+						    is.readInt();is.readObject();
+						    break; //TODO
 					}
 				}else{
 					//System.out.println("TradeScreen.Trader Waiting for data to be available - sleep 1s");
@@ -101,7 +107,6 @@ public class Trader extends Thread implements TradeScreen {
 				}
 			}
 		} catch (IOException | ClassNotFoundException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

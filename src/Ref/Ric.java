@@ -3,7 +3,7 @@ package Ref;
 import java.io.Serializable;
 
 public class Ric implements Serializable{
-	private String ric;
+	public String ric;
 
 	/**
 	 * Creates a ric object and specifies string associated with ric
@@ -34,7 +34,7 @@ public class Ric implements Serializable{
 	 * @return
 	 */
 	public String getEx(){
-		return ric.split(".")[1];
+		return ric.split("\\.")[1];
 	}
 
 	/**
@@ -42,6 +42,6 @@ public class Ric implements Serializable{
 	 * @return
 	 */
 	public String getCompany(){
-		return ric.split(".")[0];
+		return ric.split("\\.")[0];
 	}
 }

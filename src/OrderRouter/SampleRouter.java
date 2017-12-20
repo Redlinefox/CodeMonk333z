@@ -22,13 +22,14 @@ public class SampleRouter extends Thread implements Router{
 	private Socket omConn;
 	private int port;
 	private Logger log = Logger.getLogger(SampleRouter.class.getName());
-	
+
 	public SampleRouter(String name,int port){
 		this.setName(name);
 		this.port=port;
 	}
 	ObjectInputStream is;
 	ObjectOutputStream os;
+
 	public void run(){
 		//OM will connect to us
 		try {
@@ -51,6 +52,7 @@ public class SampleRouter extends Thread implements Router{
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	public void routeOrder(int id,int sliceId,int size,Instrument i) throws IOException, InterruptedException{ //MockI.show(""+order);
 		if(omConn == null) {
@@ -72,7 +74,7 @@ public class SampleRouter extends Thread implements Router{
 	@Override
 	public void sendCancel(int id,int sliceId,int size,Instrument i){ //MockI.show(""+order);
 	}
-	
+
 	@Override
 	public void priceAtSize(int id, int sliceId,Instrument i, int size) throws IOException{
 		os=new ObjectOutputStream(omConn.getOutputStream());
