@@ -1,0 +1,58 @@
+20-12-2017 15:40:44 INFO [main] LoggingManager - Logging initialised
+20-12-2017 15:40:44 INFO [main] Main - TEST: this program tests ordermanager
+20-12-2017 15:40:45 INFO [Client 1] SampleClient - OM connected to client port 2000
+20-12-2017 15:40:45 INFO [Client 2] SampleClient - OM connected to client port 2001
+20-12-2017 15:40:45 INFO [Client 2] Mock - Client 2:sendOrder: id=0 size=3771 instrument=Ref.EqInstrument@376cb46f
+20-12-2017 15:40:45 INFO [Client 2] Mock - IN MOCK 
+20-12-2017 15:40:45 INFO [Client 1] Mock - Client 1:sendOrder: id=0 size=2950 instrument=Ref.EqInstrument@376cb46f
+20-12-2017 15:40:45 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:45 INFO [Client 1] Mock - Client 1:sendOrder: id=1 size=2006 instrument=Ref.EqInstrument@376cb46f
+20-12-2017 15:40:45 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:45 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
+20-12-2017 15:40:45 INFO [Client 1] SampleClient - Client 1 received fix message: 11=0;35=A;39=A;
+20-12-2017 15:40:45 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement
+20-12-2017 15:40:45 INFO [Client 1] Mock - Client 1:END OF WHILE in Message Handler
+20-12-2017 15:40:45 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:45 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
+20-12-2017 15:40:45 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
+20-12-2017 15:40:45 INFO [Client 1] SampleClient - Client 1 received fix message: 11=1;35=A;39=A;
+20-12-2017 15:40:45 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement
+20-12-2017 15:40:45 INFO [Client 1] Mock - Client 1:END OF WHILE in Message Handler
+20-12-2017 15:40:45 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:45 INFO [Client 2] SampleClient - Client 2 received fix message: 11=0;35=A;39=A;
+20-12-2017 15:40:45 INFO [Client 2] SampleClient - Client 2 called newOrderSingleAcknowledgement
+20-12-2017 15:40:45 INFO [Client 2] Mock - Client 2:END OF WHILE in Message Handler
+20-12-2017 15:40:45 INFO [Client 2] Mock - IN MOCK 
+20-12-2017 15:40:46 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
+20-12-2017 15:40:48 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
+20-12-2017 15:40:48 INFO [Order Manager] OrderManager - Order Manager calling acceptOrder
+20-12-2017 15:40:48 INFO [Client 1] SampleClient - Client 1 received fix message: 11=0;35=A;39=0
+20-12-2017 15:40:48 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement
+20-12-2017 15:40:48 INFO [Client 1] Mock - Client 1:END OF WHILE in Message Handler
+20-12-2017 15:40:48 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:50 INFO [Order Manager] OrderManager - Order Manager calling acceptOrder
+20-12-2017 15:40:50 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
+20-12-2017 15:40:50 INFO [Client 2] SampleClient - Client 2 received fix message: 11=0;35=A;39=0
+20-12-2017 15:40:50 INFO [Client 2] SampleClient - Client 2 called newOrderSingleAcknowledgement
+20-12-2017 15:40:50 INFO [Client 2] Mock - Client 2:END OF WHILE in Message Handler
+20-12-2017 15:40:50 INFO [Client 2] Mock - IN MOCK 
+20-12-2017 15:40:52 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: price
+20-12-2017 15:40:52 INFO [Order Manager] OrderManager - Order Manager calling acceptOrder
+20-12-2017 15:40:52 INFO [Client 1] SampleClient - Client 1 received fix message: 11=1;35=A;39=0
+20-12-2017 15:40:52 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement
+20-12-2017 15:40:52 INFO [Client 1] Mock - Client 1:END OF WHILE in Message Handler
+20-12-2017 15:40:52 INFO [Client 1] Mock - IN MOCK 
+20-12-2017 15:40:54 ERROR [TradeScreen.Trader James] Trader - Error description
+java.lang.NullPointerException
+	at TradeScreen.Trader.price(Trader.java:184)
+	at TradeScreen.Trader.run(Trader.java:91)
+20-12-2017 15:40:54 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: price
+20-12-2017 15:40:57 ERROR [TradeScreen.Trader James] Trader - Error description
+java.lang.NullPointerException
+	at TradeScreen.Trader.price(Trader.java:184)
+	at TradeScreen.Trader.run(Trader.java:91)
+20-12-2017 15:40:57 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: price
+20-12-2017 15:40:59 ERROR [TradeScreen.Trader James] Trader - Error description
+java.lang.NullPointerException
+	at TradeScreen.Trader.price(Trader.java:184)
+	at TradeScreen.Trader.run(Trader.java:91)
