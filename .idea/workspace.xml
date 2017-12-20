@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="66f8e1cd-cd2e-43ab-9417-98080ce666dd" name="Default" comment="added to ignore list">
+    <list default="true" id="66f8e1cd-cd2e-43ab-9417-98080ce666dd" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/Database/DAO.java" afterPath="$PROJECT_DIR$/src/Database/DAO.java" />
-      <change beforePath="$PROJECT_DIR$/src/TradeScreen/Trader.java" afterPath="$PROJECT_DIR$/src/TradeScreen/Trader.java" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -504,7 +502,14 @@
       <option name="project" value="LOCAL" />
       <updated>1513738427625</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed acceptOrder() test by adding guard.">
+      <created>1513739886601</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1513739886601</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -610,7 +615,8 @@
     <MESSAGE value="Merged conflicts from Trader class.&#10;Made code user-friendly in Mock Client, Client, and Sample Client" />
     <MESSAGE value="Fixed error in Trader class." />
     <MESSAGE value="added to ignore list" />
-    <option name="LAST_COMMIT_MESSAGE" value="added to ignore list" />
+    <MESSAGE value="Fixed acceptOrder() test by adding guard." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed acceptOrder() test by adding guard." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
