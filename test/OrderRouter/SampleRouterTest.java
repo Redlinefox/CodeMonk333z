@@ -1,6 +1,8 @@
 package OrderRouter;
 
 import MockClient.MockClient;
+import Ref.EqInstrument;
+import Ref.Instrument;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
 
 public class SampleRouterTest {
@@ -18,19 +21,17 @@ public class SampleRouterTest {
     ObjectInputStream is;
     ObjectOutputStream os;
     private Socket omConn;
+    Instrument instr;
 
     @org.junit.Before
     public void setUp() throws Exception {
-
+        router = new SampleRouter("test", 2201);
+        instr = new EqInstrument(1);
     }
 
     @org.junit.After
     public void tearDown() throws Exception {
     }
-
-
-
-
 
     @org.junit.Test
     public void run() {
@@ -39,10 +40,9 @@ public class SampleRouterTest {
     }
 
     @org.junit.Test
-    public void routeOrder() throws IOException {
-        router = new SampleRouter("test", 2201);
-
-
+    public void routeOrder() throws IOException, InterruptedException {
+        router.routeOrder(1,1,500,instr);
+        assertNull(omConn);
     }
 
     /*
@@ -66,8 +66,9 @@ public class SampleRouterTest {
     }
 
     @org.junit.Test
-    public void priceAtSize() {
-
+    public void priceAtSize() throws IOException {
+        router.priceAtSize(1,1,instr,500);
+        assertNull(omConn);
     }
 
 
