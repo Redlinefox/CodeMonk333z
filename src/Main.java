@@ -36,6 +36,13 @@ public class Main{
 		InetSocketAddress trader = new InetSocketAddress("localhost", 2020);
 		LiveMarketData liveMarketData = new SampleLiveMarketData();
 		(new MockOM("Order Manager", routers, clients, trader, liveMarketData)).start();
+
+
+		///slicing and filling
+
+
+
+
 	}
 }
 

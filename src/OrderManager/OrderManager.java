@@ -118,8 +118,8 @@ public class OrderManager {
 				log.info(Thread.currentThread().getName()+" calling "+method);
 				switch(method){
 					case "acceptOrder":
-						acceptOrder(is.readInt())
-						;break;
+						acceptOrder(is.readInt());
+						break;
 					case "sliceOrder":
 						sliceOrder(is.readInt(), is.readInt());
 				}
