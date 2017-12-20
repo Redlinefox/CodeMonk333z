@@ -187,7 +187,9 @@ public class Trader extends Thread implements TradeScreen {
 		Thread.sleep(2134);
 		// delegates work to sliceOrder
 		try {
-			sliceOrder(id, orders.get(o.getId()).sizeRemaining() / 2);
+			if(orders.get(id) != null) {
+				sliceOrder(id, orders.get(id).sizeRemaining() / 2);
+			}
 		} catch (NullPointerException e)
 		{
 			log.error("Error description",e);
