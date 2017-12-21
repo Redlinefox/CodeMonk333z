@@ -9,10 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MockOM extends Thread{
+
 	private InetSocketAddress[] clients;
 	private InetSocketAddress[] routers;
 	private InetSocketAddress trader;
 	private LiveMarketData liveMarketData;
+
 	public MockOM(String name,InetSocketAddress[] routers,InetSocketAddress[] clients,InetSocketAddress trader,LiveMarketData liveMarketData){
 		this.clients=clients;
 		this.routers=routers;
@@ -20,6 +22,7 @@ public class MockOM extends Thread{
 		this.liveMarketData=liveMarketData;
 		this.setName(name);
 	}
+
 	@Override
 	public void run(){
 		try{

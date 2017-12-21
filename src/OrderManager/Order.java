@@ -143,77 +143,6 @@ public class Order implements Serializable{
         }
     }
 
-    /*
-	public void cross(Order matchingOrder){
-		//pair slices first and then parent
-		for(Order slice:slices){
-			if(slice.sizeRemaining()==0)
-				continue;
-			//TODO could optimise this to not start at the beginning every time
-			for(Order matchingSlice:matchingOrder.slices){
-				long msze=matchingSlice.sizeRemaining();
-				if(msze==0)
-					continue;
-				long sze=slice.sizeRemaining();
-				if(sze<=msze){
-					 slice.createFill(sze,initialMarketPrice);
-					 matchingSlice.createFill(sze, initialMarketPrice);
-					 break;
-				}
-				//sze>msze
-				slice.createFill(msze,initialMarketPrice);
-				matchingSlice.createFill(msze, initialMarketPrice);
-			}
-
-			long sze=slice.sizeRemaining();
-			long mParent=matchingOrder.sizeRemaining()-matchingOrder.sliceSizes();
-			if(sze>0 && mParent>0){
-				if(sze>=mParent){
-					slice.createFill(sze,initialMarketPrice);
-					matchingOrder.createFill(sze, initialMarketPrice);
-				}else{
-					slice.createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);
-				}
-			}
-			//no point continuing if we didn't fill this slice, as we must already have fully filled the matchingOrder
-			if(slice.sizeRemaining()>0)
-				break;
-		}
-		if(sizeRemaining()>0){
-			for(Order matchingSlice:matchingOrder.slices){
-				long msze=matchingSlice.sizeRemaining();
-				if(msze==0)
-					continue;
-				long sze=sizeRemaining();
-				if(sze<=msze){
-					 createFill(sze,initialMarketPrice);
-					 matchingSlice.createFill(sze, initialMarketPrice);
-					 break;
-				}
-				//sze>msze
-				createFill(msze,initialMarketPrice);
-				matchingSlice.createFill(msze, initialMarketPrice);
-			}
-			long sze=sizeRemaining();
-			long mParent=matchingOrder.sizeRemaining()-matchingOrder.sliceSizes();
-			if(sze>0 && mParent>0){
-				if(sze>=mParent){
-					createFill(sze,initialMarketPrice);
-					matchingOrder.createFill(sze, initialMarketPrice);
-				}else{
-					createFill(mParent,initialMarketPrice);
-					matchingOrder.createFill(mParent, initialMarketPrice);
-				}
-			}
-		}
-	}
-	*/
-	
-	private void cancel(){
-		//state=cancelled
-	}
-
     //Getters and Setters
     public long getId() {
         return id;
@@ -297,10 +226,6 @@ public class Order implements Serializable{
 
 	public ArrayList<Fill> getFills() {
 		return fills;
-	}
-
-	public void setFills(ArrayList<Fill> fills) {
-		this.fills = fills;
 	}
 
 	public char getOrdStatus() {

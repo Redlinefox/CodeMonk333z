@@ -2,7 +2,6 @@ package OrderClient;
 
 import java.io.Serializable;
 
-import Ref.EqInstrument;
 import Ref.Instrument;
 
 public class NewOrderSingle implements Serializable{
@@ -28,18 +27,6 @@ public class NewOrderSingle implements Serializable{
 	
 	public int getSize() {
 		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
 	}
 
 	public Instrument getInstrument() {
