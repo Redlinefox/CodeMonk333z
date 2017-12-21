@@ -7,11 +7,13 @@ import MockClient.MockClient;
 import MockClient.MockOM;
 import OrderManager.OrderManager;
 import OrderRouter.SampleRouter;
+import Ref.LoggingManager;
 import TradeScreen.Trader;
 import org.apache.log4j.Logger;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        LoggingManager.initialiseLogging();
         Logger log = Logger.getLogger(Main.class.getName());
         log.info("TEST: this program tests ordermanager");
 
