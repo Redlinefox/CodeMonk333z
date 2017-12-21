@@ -251,9 +251,10 @@ public class OrderManager {
 		}
 	}
 
-//	private void cancelOrder(){
-//
-//	}
+	private void cancelOrder(long id, long sliceId){
+
+
+	}
 
 	
 

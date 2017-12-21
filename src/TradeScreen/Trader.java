@@ -126,9 +126,6 @@ public class Trader extends Thread implements TradeScreen {
     	orders.remove(id);
 	}
 
-
-
-	
 	public void newOrder(int id,Order order) throws IOException, InterruptedException {
 		// put order into List of orders
 		orders.put(id, order);
