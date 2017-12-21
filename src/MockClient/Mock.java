@@ -6,6 +6,5 @@ public class Mock{
 	public static void show(String out){
 		Logger log = Logger.getLogger(Mock.class.getName());
 		log.info(Thread.currentThread().getName()+":"+out);
-		log.info("IN MOCK ");
 	}
 }

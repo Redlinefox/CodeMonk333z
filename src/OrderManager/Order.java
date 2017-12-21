@@ -12,14 +12,13 @@ public class Order implements Serializable{
 	private long size;
 	private long bestPriceCount;
 	private long clientid;
+	private long price;
 	private short orderRouter;
 	private long clientOrderID;
 	private double[]bestPrices;
 	private Instrument instrument;
 	private double initialMarketPrice;
 	private char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'
-
-
 	private ArrayList<Order>slices;
 	private ArrayList<Fill>fills;
 

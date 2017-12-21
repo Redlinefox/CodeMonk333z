@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 
 public class OrderManager {
 	private static LiveMarketData liveMarketData;
-	private Map<Integer,Order> orders = new HashMap<>();
+	private Map<Integer, Order> orders = new HashMap<>();
 	private int id;
 	private Socket[] orderRouters;
 	private Socket[] clients;
@@ -148,23 +148,26 @@ public class OrderManager {
 	//orders is a hashmap, object is being assigned info
 	//regular code for a object stream, write/flush etc
 	private void newOrder(int clientId, int clientOrderId, NewOrderSingle nos) throws IOException{
-
 		orders.put(id, new Order(clientId, clientOrderId, nos.getInstrument(), nos.getSize()));
+		orders.get(id).setOrdStatus('A');
 		//send a message to the client with 39=A; //OrdStatus is Fix 39 (TAG), 'A' is 'Pending New' (VALUE)
 		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
-		os.writeObject("11="+clientOrderId+";35=A;39=A;");
+		os.writeObject(orders.get(id));
 		os.flush();
 		sendOrderToTrader(id,orders.get(id),TradeScreen.api.newOrder);		//send the new order to the trading screen
 		id++;
 	}
+	
 	//regular code for a object stream, write/flush etc
 	private void sendOrderToTrader(long id,Order o,Object method) throws IOException{
 		ObjectOutputStream ost=new ObjectOutputStream(trader.getOutputStream());
+		log.info("hi");
 		ost.writeObject(method);
 		ost.writeLong(id);
 		ost.writeObject(o);
 		ost.flush();
 	}
+	
 	//sends out info about an order with output stream
 	public void acceptOrder(int id) throws IOException{
 		Order o=orders.get(id);
@@ -219,7 +222,7 @@ public class OrderManager {
 	}
 
 	private void newFill(long id,long sliceId,long size,double price) throws IOException{
-		Order o=orders.get(id);
+		Order o=orders.get((int) id);
 		o.getSlices().get((int)sliceId).createFill(size, price);
 		if(o.sizeRemaining()==0){
 			Database.write(o);

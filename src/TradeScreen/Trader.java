@@ -184,7 +184,6 @@ public class Trader extends Thread implements TradeScreen {
 	@Override
 	public void price(long id, Order o) throws InterruptedException, IOException {
 		//TODO should update the trade screen
-		Thread.sleep(2134);
 		// delegates work to sliceOrder
 		try {
 			if(orders.get(id) != null) {
@@ -195,6 +194,4 @@ public class Trader extends Thread implements TradeScreen {
 			log.error("Error description",e);
 		}
 	}
-
-
 }

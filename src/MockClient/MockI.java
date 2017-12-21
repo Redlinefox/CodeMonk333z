@@ -1,7 +1,11 @@
 package MockClient;
 
+import OrderManager.OrderManager;
+import org.apache.log4j.Logger;
+
 public class MockI{
 	public static void show(String out) {
-		System.err.println(out);
+		Logger log = Logger.getLogger(MockI.class.getName());
+		log.error(out);
 	}
 }
