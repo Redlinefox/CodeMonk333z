@@ -2,6 +2,7 @@ package OrderManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import Ref.EqInstrument;
 import Ref.Instrument;
@@ -16,6 +17,23 @@ public class Order implements Serializable{
 	private short orderRouter;
 	private long clientOrderID;
 	private double[]bestPrices;
+
+	@Override
+	public String toString() {
+		return "Order{" +
+				"id=" + id +
+				", size=" + size +
+				", bestPriceCount=" + bestPriceCount +
+				", clientid=" + clientid +
+				", price=" + price +
+				", orderRouter=" + orderRouter +
+				", clientOrderID=" + clientOrderID +
+				", OrdStatus=" + OrdStatus +
+				", slices=" + slices +
+				", fills=" + fills +
+				'}';
+	}
+
 	private Instrument instrument;
 	private double initialMarketPrice;
 	private char OrdStatus='A'; //OrdStatus is Fix 39, 'A' is 'Pending New'

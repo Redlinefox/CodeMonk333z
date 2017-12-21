@@ -70,7 +70,7 @@ public class SampleClient extends MockClient.Mock implements Client {
 		MockClient.Mock.show("cancelOrder: id=" + id + " sliceid=" + sliceId);
 		if (omConn.isConnected()) {
 			ObjectOutputStream os = new ObjectOutputStream(omConn.getOutputStream());
-			os.writeObject("fill");
+			os.writeObject("cancel");
 			os.writeLong(id);
 			os.writeLong(sliceId);
 			os.flush();
@@ -108,40 +108,39 @@ public class SampleClient extends MockClient.Mock implements Client {
 
 			ObjectInputStream is;
 			try {
-				while (runner) {
-					//is.wait(); //this throws an exception!!
-					while (0 < omConn.getInputStream().available()) {
-						is = new ObjectInputStream(omConn.getInputStream());
-						Object fixO = is.readObject();
-						Order o = null;
-						if (fixO instanceof Order) {
-							o = (Order) fixO;
-							log.info(Thread.currentThread().getName() + " received fix message: " + o.getOrdStatus() + ", " + o.getClientid() + ", " + o.getId());
+				//is.wait(); //this throws an exception!!
+				while (0 < omConn.getInputStream().available()) {
+					is = new ObjectInputStream(omConn.getInputStream());
+					Object fixO = is.readObject();
+					Order o = null;
+					if (fixO instanceof Order) {
+						o = (Order) fixO;
+						log.info(Thread.currentThread().getName() + " received fix message: " + o.getOrdStatus() + ", " + o.getClientid() + ", " + o.getId());
 
-							char MsgType = o.getOrdStatus();
-							switch (MsgType) {
-								case 'A':
-									log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to new order single acknowledgement");
-									newOrderSingleAcknowledgement(o.getId());
-									break;
-								case 'C':
-									log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to cancelled");
-									cancelled(o);
-									break;
-								case 'P':
-									log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to partially filled");
-									partialFill(o);
-									break;
-								case 'F':
-									log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to fully filled");
-									fullyFilled(o);
-									break;
-								default:
-									log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to default");
-							}
+						char MsgType = o.getOrdStatus();
+						switch (MsgType) {
+							case 'A':
+								log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to new order single acknowledgement");
+								newOrderSingleAcknowledgement(o.getId());
+								break;
+							case 'C':
+								log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to cancelled");
+								cancelled(o);
+								break;
+							case 'P':
+								log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to partially filled");
+								partialFill(o);
+								break;
+							case 'F':
+								log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to fully filled");
+								fullyFilled(o);
+								break;
+							default:
+								log.info("Order: " + o.getId() + " with status [" + o.getOrdStatus() + "] went to default");
 						}
 					}
 				}
+
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}

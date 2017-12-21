@@ -77,6 +77,9 @@ public class OrderManager {
 						case "fill":
 							newFill(is.readLong(), is.readLong(), is.readLong(), is.readDouble());
 							break;
+						case "cancel":
+							cancelOrder(is.readLong(), is.readLong());
+							break;
 						//TODO create a default case which errors with "Unknown message type"+...
 						default:
 							log.error("Unknown message type for " + method);
@@ -171,23 +174,33 @@ public class OrderManager {
 	}
 
 	private void newFill(long id,long sliceId,long size,double price) throws IOException{
-		Order o=orders.get((int) id);
-		if(sliceId > 0) {
+		Order o;
+		try {
+			o = orders.get((int) id);
 			try {
 				o = o.getSlices().get((int) sliceId);
-			} catch (NullPointerException e) {
-				log.error("Slice does not exist in list of orders", e);
+			} catch (IndexOutOfBoundsException | NullPointerException e) {
+				log.info("Slice " + sliceId + " does not exist in list of orders");
+			} finally {
+				o.createFill(size, price);
+				o.setOrdStatus('P');
+				if(o.sizeRemaining()==0){
+					o.setOrdStatus('F');
+				}
+				ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
+				os.writeObject(o);
+				os.flush();
+
+				String orderS = "";
+				for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+					orderS += " " + ord.getValue().toString()+"\n";
+				}
+				log.info("Order Manager's order list (post fill): " + orderS);
+				sendFillToTrader(id, sliceId, size, price, TradeScreen.api.fill);
 			}
+		} catch (IndexOutOfBoundsException | NullPointerException e) {
+			log.info("Order id " + id + " does not exist.");
 		}
-		o.createFill(size, price);
-		o.setOrdStatus('P');
-		if(o.sizeRemaining()==0){
-			o.setOrdStatus('F');
-		}
-		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
-		os.writeObject(o);
-		os.flush();
-		sendFillToTrader(id, sliceId, size, price, TradeScreen.api.fill);
 	}
 
 	private void sendFillToTrader(long id, long sliceId, long size, double price, Object method) throws IOException {
@@ -201,23 +214,30 @@ public class OrderManager {
 	}
 
 	private void cancelOrder(long id,long sliceId) throws IOException{
-		Order o=orders.get((int) id);
-		if(sliceId > 0) {
+		Order o;
+		try {
+			o = orders.get((int) id);
 			try {
-				o = orders.get(id).getSlices().get((int) sliceId);
-				orders.get(id).getSlices().remove(sliceId);
-			} catch (NullPointerException e) {
-				log.error("Slice does not exist in list of orders", e);
+				o = o.getSlices().get((int) sliceId);
+			} catch (IndexOutOfBoundsException | NullPointerException e) {
+				log.info("Slice " + sliceId + " does not exist in list of orders");
+			} finally {
+				orders.remove((int) o.getId());
+				o.setOrdStatus('C');
+				ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
+				os.writeObject(o);
+				os.flush();
+				
+				String orderS = "";
+				for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+					orderS += " " + ord.getValue().toString()+"\n";
+				}
+				log.info("Order Manager's order list (post cancelling): " + orderS);
+				sendCancelToTrader(id, sliceId, TradeScreen.api.cancel);
 			}
-		} else {
-			o = orders.get(id);
-			orders.remove(id);
-		}
-		o.setOrdStatus('C');
-		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
-		os.writeObject(o);
-		os.flush();
-		sendCancelToTrader(id, sliceId, TradeScreen.api.cancel);
+		} catch (IndexOutOfBoundsException | NullPointerException e) {
+			log.info("Order id " + id + " does not exist.");
+		} 
 	}
 
 	private void sendCancelToTrader(long id, long sliceId, Object method) throws IOException {

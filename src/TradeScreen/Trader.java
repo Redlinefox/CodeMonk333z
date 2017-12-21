@@ -71,8 +71,6 @@ public class Trader extends Thread implements TradeScreen {
 			
 			//is=new ObjectInputStream( omConn.getInputStream());
 			InputStream s=omConn.getInputStream(); //if i try to create an objectinputstream before we have data it will block
-			// Created by EZ
-			//OutputStream so=omConn.getOutputStream();
 			// run until told not to
 			while(isRunner()){
 				// check if Input Streams available
@@ -89,6 +87,11 @@ public class Trader extends Thread implements TradeScreen {
 					switch(method) {
 						case newOrder:
 						    newOrder(is.readLong(),(Order)is.readObject());
+							String orderSNO = "";
+							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+								orderSNO += " " + ord.getValue().toString()+"\n";
+							}
+							log.info("Trader's order list (post newOrder): " + orderSNO);
 						    break;
 						case price:
 							try{
@@ -103,7 +106,20 @@ public class Trader extends Thread implements TradeScreen {
 						    break; //TODO
 						case fill:
 							fill(is.readInt(), is.readLong(), is.readLong(), is.readDouble()); 	//is.readInt();is.readObject();
-						    break;
+							String orderSF = "";
+							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+								orderSF += " " + ord.getValue().toString()+"\n";
+							}
+							log.info("Trader's order list (post fill): " + orderSF);
+							break;
+						case cancel:
+							cancelOrder(is.readInt(), is.readInt()); 	//is.readInt();is.readObject();
+							String orderSC = "";
+							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+								orderSC += " " + ord.getValue().toString()+"\n";
+							}
+							log.info("Trader's order list (post cancel): " + orderSC);
+							break;
 					}
 				}
 			}
@@ -114,23 +130,41 @@ public class Trader extends Thread implements TradeScreen {
 
 
 	public void fill(long id, long sliceId, long size, double price) {
-    	Order order = orders.get(id);
-    	if(sliceId > 0) {
-    		order = order.getSlices().get((int) sliceId);
+		Order order;
+		try {
+			order = orders.get((int) id);
+			try {
+				order = order.getSlices().get((int) sliceId);
+			} catch (IndexOutOfBoundsException | NullPointerException e) {
+				log.info("Slice " + sliceId + " does not exist in list of orders");
+			} finally {
+				order.createFill(size, price);
+			}
+		} catch (IndexOutOfBoundsException | NullPointerException e) {
+			log.info("Order id " + id + " does not exist.");
 		}
-		order.createFill(size,price);
 	}
 
 
-	public void cancelOrder(long id) {
-    	orders.remove(id);
+	public void cancelOrder(long id, long sliceId) {
+		Order order;
+    	try {
+			order = orders.get((int) id);
+			try {
+				order = order.getSlices().get((int) sliceId);
+			} catch (IndexOutOfBoundsException | NullPointerException e) {
+				log.info("Slice " + sliceId + " does not exist in list of orders");
+			} finally {
+				orders.remove((int) order.getId());
+			}
+		} catch (IndexOutOfBoundsException | NullPointerException e) {
+			log.info("Order id " + id + " does not exist.");
+		}
 	}
 
 	public void newOrder(int id,Order order) throws IOException, InterruptedException {
 		// put order into List of orders
 		orders.put(id, order);
-		
-		acceptOrder(id);
 	}
 
     /**

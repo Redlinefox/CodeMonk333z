@@ -1,24 +1,65 @@
-21-12-2017 09:18:27 INFO [main] LoggingManager - Logging initialised
-21-12-2017 09:18:27 INFO [main] Main - TEST: this program tests ordermanager
-21-12-2017 09:18:27 INFO [Client 2] SampleClient - OM connected to client port 2001
-21-12-2017 09:18:27 INFO [Client 1] SampleClient - OM connected to client port 2000
-21-12-2017 09:18:27 INFO [Client 2] Mock - Client 2:sendOrder: id=0 size=830 instrument=Ref.EqInstrument@367e0484
-21-12-2017 09:18:27 INFO [Client 1] Mock - Client 1:sendOrder: id=0 size=794 instrument=Ref.EqInstrument@367e0484
-21-12-2017 09:18:27 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
-21-12-2017 09:18:27 INFO [Order Manager] OrderManager - hi
-21-12-2017 09:18:27 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
-21-12-2017 09:18:27 INFO [Order Manager] OrderManager - hi
-21-12-2017 09:18:27 INFO [Client 1] SampleClient - Client 1 received fix message: A, 0, 0
-21-12-2017 09:18:27 INFO [Client 1] SampleClient - Order: 0 with status [A] went to new order single acknowledgement
-21-12-2017 09:18:27 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement
-21-12-2017 09:18:27 INFO [Client 2] SampleClient - Client 2 received fix message: A, 1, 0
-21-12-2017 09:18:27 INFO [Client 2] SampleClient - Order: 0 with status [A] went to new order single acknowledgement
-21-12-2017 09:18:27 INFO [Client 2] SampleClient - Client 2 called newOrderSingleAcknowledgement
-21-12-2017 09:18:28 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
-21-12-2017 09:18:30 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
-21-12-2017 09:18:30 INFO [Order Manager] OrderManager - Order Manager calling acceptOrder
-21-12-2017 09:18:30 INFO [Order Manager] OrderManager - hi
-21-12-2017 09:18:32 INFO [Order Manager] OrderManager - Order Manager calling acceptOrder
-21-12-2017 09:18:32 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: price
-21-12-2017 09:18:32 INFO [Order Manager] OrderManager - hi
-21-12-2017 09:18:34 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: price
+21-12-2017 14:50:39 INFO [main] LoggingManager - Logging initialised
+21-12-2017 14:50:39 INFO [main] Main - TEST: this program tests ordermanager
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - OM connected to client port 2000
+21-12-2017 14:50:39 INFO [Client 1] Mock - Client 1:sendOrder: id=0 size=4784 instrument=Ref.EqInstrument@146b8061
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - OM connected to client port 2001
+21-12-2017 14:50:39 INFO [Client 2] Mock - Client 2:sendOrder: id=0 size=4957 instrument=Ref.EqInstrument@71b5e54d
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling newOrderSingle
+21-12-2017 14:50:39 INFO [Client 2] Mock - Client 2:fillOrder: id=0 sliceid=0 size=100 price=200.0
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling fill
+21-12-2017 14:50:39 INFO [Client 1] Mock - Client 1:fillOrder: id=0 sliceid=0 size=100 price=200.0
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Client 2 received fix message: A, 1, 0
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - Client 1 received fix message: A, 0, 0
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - Order: 0 with status [A] went to new order single acknowledgement
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - Client 1 called newOrderSingleAcknowledgement for 0
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Order: 0 with status [A] went to new order single acknowledgement
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Client 2 called newOrderSingleAcknowledgement for 0
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Client 2 received fix message: P, 0, 0
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Order: 0 with status [P] went to partially filled
+21-12-2017 14:50:39 INFO [Client 2] Mock - Client 2:Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=P, slices=[], fills=[OrderManager.Fill@4ac50788]}
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager's order list (post fill):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=P, slices=[], fills=[OrderManager.Fill@71e3ad7e]}
+ Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling fill
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager's order list (post fill):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=P, slices=[], fills=[OrderManager.Fill@71e3ad7e, OrderManager.Fill@a2d4903]}
+ Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [Client 2] Mock - Client 2:cancelOrder: id=0 sliceid=0
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling cancel
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager's order list (post cancelling):  Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Client 2 received fix message: C, 0, 0
+21-12-2017 14:50:39 INFO [Client 2] SampleClient - Order: 0 with status [C] went to cancelled
+21-12-2017 14:50:39 INFO [Client 1] Mock - Client 1:cancelOrder: id=0 sliceid=0
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order Manager calling cancel
+21-12-2017 14:50:39 INFO [Client 2] Mock - Client 2:Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=C, slices=[], fills=[OrderManager.Fill@74c7b1e8, OrderManager.Fill@3a14435]}
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [Order Manager] OrderManager - Order id 0 does not exist.
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - Client 1 received fix message: P, 0, 0
+21-12-2017 14:50:39 INFO [Client 1] SampleClient - Order: 0 with status [P] went to partially filled
+21-12-2017 14:50:39 INFO [Client 1] Mock - Client 1:Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=P, slices=[], fills=[OrderManager.Fill@f0a306a, OrderManager.Fill@62a9d5d6]}
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Trader's order list (post newOrder):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: newOrder
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Trader's order list (post newOrder):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+ Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: fill
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Trader's order list (post fill):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=1, slices=[], fills=[OrderManager.Fill@78e7571]}
+ Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: fill
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Trader's order list (post fill):  Order{id=0, size=4784, bestPriceCount=0, clientid=0, price=0, orderRouter=0, clientOrderID=0, OrdStatus=1, slices=[], fills=[OrderManager.Fill@78e7571, OrderManager.Fill@2b2a9115]}
+ Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - TradeScreen.Trader James calling: cancel
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Slice 0 does not exist in list of orders
+21-12-2017 14:50:39 INFO [TradeScreen.Trader James] Trader - Trader's order list (post cancel):  Order{id=0, size=4957, bestPriceCount=0, clientid=1, price=0, orderRouter=0, clientOrderID=0, OrdStatus=A, slices=[], fills=[]}
+
