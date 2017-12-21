@@ -160,6 +160,11 @@ public class OrderManager {
 		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
 		os.writeObject(orders.get(id));
 		os.flush();
+		String orderS = "";
+		for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
+			orderS += "\n\t\t" + ord.getValue().toString();
+		}
+		log.info("Order Manager's order list (post new order): " + orderS);
 		sendOrderToTrader(id,orders.get(id),TradeScreen.api.newOrder);		//send the new order to the trading screen
 		id++;
 	}
@@ -193,7 +198,7 @@ public class OrderManager {
 
 				String orderS = "";
 				for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
-					orderS += " " + ord.getValue().toString()+"\n";
+					orderS += "\n\t\t" + ord.getValue().toString();
 				}
 				log.info("Order Manager's order list (post fill): " + orderS);
 				sendFillToTrader(id, sliceId, size, price, TradeScreen.api.fill);
@@ -230,7 +235,7 @@ public class OrderManager {
 				
 				String orderS = "";
 				for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
-					orderS += " " + ord.getValue().toString()+"\n";
+					orderS += "\n\t\t" + ord.getValue().toString();
 				}
 				log.info("Order Manager's order list (post cancelling): " + orderS);
 				sendCancelToTrader(id, sliceId, TradeScreen.api.cancel);

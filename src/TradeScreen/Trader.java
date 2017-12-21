@@ -89,7 +89,7 @@ public class Trader extends Thread implements TradeScreen {
 						    newOrder(is.readLong(),(Order)is.readObject());
 							String orderSNO = "";
 							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
-								orderSNO += " " + ord.getValue().toString()+"\n";
+								orderSNO += "\n\t\t" + ord.getValue().toString();
 							}
 							log.info("Trader's order list (post newOrder): " + orderSNO);
 						    break;
@@ -108,7 +108,7 @@ public class Trader extends Thread implements TradeScreen {
 							fill(is.readInt(), is.readLong(), is.readLong(), is.readDouble()); 	//is.readInt();is.readObject();
 							String orderSF = "";
 							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
-								orderSF += " " + ord.getValue().toString()+"\n";
+								orderSF += "\n\t\t" + ord.getValue().toString();
 							}
 							log.info("Trader's order list (post fill): " + orderSF);
 							break;
@@ -116,7 +116,7 @@ public class Trader extends Thread implements TradeScreen {
 							cancelOrder(is.readInt(), is.readInt()); 	//is.readInt();is.readObject();
 							String orderSC = "";
 							for(Map.Entry<Integer, Order> ord: orders.entrySet()) {
-								orderSC += " " + ord.getValue().toString()+"\n";
+								orderSC += "\n\t\t" + ord.getValue().toString();
 							}
 							log.info("Trader's order list (post cancel): " + orderSC);
 							break;
