@@ -199,8 +199,34 @@ public class OrderManager {
 		ost.writeDouble(price);
 		ost.flush();
 	}
-	
-	
+
+	private void cancelOrder(long id,long sliceId) throws IOException{
+		Order o=orders.get((int) id);
+		if(sliceId > 0) {
+			try {
+				o = orders.get(id).getSlices().get((int) sliceId);
+				orders.get(id).getSlices().remove(sliceId);
+			} catch (NullPointerException e) {
+				log.error("Slice does not exist in list of orders", e);
+			}
+		} else {
+			o = orders.get(id);
+			orders.remove(id);
+		}
+		o.setOrdStatus('C');
+		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
+		os.writeObject(o);
+		os.flush();
+		sendCancelToTrader(id, sliceId, TradeScreen.api.cancel);
+	}
+
+	private void sendCancelToTrader(long id, long sliceId, Object method) throws IOException {
+		ObjectOutputStream ost=new ObjectOutputStream(trader.getOutputStream());
+		ost.writeObject(method);
+		ost.writeLong(id);
+		ost.writeLong(sliceId);
+		ost.flush();
+	}
 	
 	//sends out info about an order with output stream
 	public void acceptOrder(int id) throws IOException{
@@ -250,14 +276,7 @@ public class OrderManager {
 			}
 		}
 	}
-
-	private void cancelOrder(long id, long sliceId){
-
-
-	}
-
 	
-
 	private void routeOrder(long id,long sliceId,long size,Order order) throws IOException{
 		for(Socket r:orderRouters){
 			ObjectOutputStream os=new ObjectOutputStream(r.getOutputStream());
