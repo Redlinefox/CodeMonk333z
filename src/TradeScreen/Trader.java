@@ -2,14 +2,15 @@ package TradeScreen;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ServerSocketFactory;
+
+import OrderManager.Fill;
 import OrderManager.Order;
 import org.apache.log4j.Logger;
-
-import static TradeScreen.TradeScreen.api.cross;
 
 public class Trader extends Thread implements TradeScreen {
     // Socket used to connect clients and traders
@@ -23,6 +24,9 @@ public class Trader extends Thread implements TradeScreen {
     // Determines when Trader thread stops running
     private boolean runner = true;
     private Logger log = Logger.getLogger(Trader.class.getName());
+
+	private ArrayList<Order> slices;
+	private ArrayList<Fill>fills;
 
     /**
      * Initialize Trader class
@@ -94,13 +98,12 @@ public class Trader extends Thread implements TradeScreen {
 									log.error("Error description",e);
 								}
 								break;
-						// These two not completed
 						case cross:
 						    is.readInt();is.readObject();
 						    break; //TODO
 						case fill:
-						    is.readInt();is.readObject();
-						    break; //TODO
+							fill(is.readInt(), is.readLong(), is.readLong(), is.readDouble()); 	//is.readInt();is.readObject();
+						    break;
 					}
 				}
 			}
@@ -108,6 +111,23 @@ public class Trader extends Thread implements TradeScreen {
 			log.error("Error description",e);
 		}
 	}
+
+
+	public void fill(long id, long sliceId, long size, double price) {
+    	Order order = orders.get(id);
+    	if(sliceId > 0) {
+    		order = order.getSlices().get((int) sliceId);
+		}
+		order.createFill(size,price);
+	}
+
+
+	public void cancelOrder(long id) {
+    	orders.remove(id);
+	}
+
+
+
 	
 	public void newOrder(int id,Order order) throws IOException, InterruptedException {
 		// put order into List of orders
@@ -175,8 +195,6 @@ public class Trader extends Thread implements TradeScreen {
 	 */
 	@Override
 	public void price(long id, Order o) throws InterruptedException, IOException {
-		//TODO should update the trade screen
-		Thread.sleep(2134);
 		// delegates work to sliceOrder
 		try {
 			if(orders.get(id) != null) {

@@ -217,9 +217,9 @@ public class OrderManager {
 		}
 	}
 
-	private void cancelOrder(){
-		//TODO impl
-	}
+//	private void cancelOrder(){
+//
+//	}
 
 	private void newFill(long id,long sliceId,long size,double price) throws IOException{
 		Order o=orders.get((int) id);

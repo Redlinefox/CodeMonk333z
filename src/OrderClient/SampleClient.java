@@ -130,7 +130,6 @@ public class SampleClient extends MockClient.Mock implements Client{
 				}
 			}
 		} catch (IOException|ClassNotFoundException e){
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
