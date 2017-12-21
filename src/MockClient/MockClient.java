@@ -16,9 +16,10 @@ public class MockClient extends Thread implements MockClientInterface{
 	public void run(){
 		try {
 			SampleClient client=new SampleClient(port);
-				client.sendOrder();
-				client.messageHandler();
-
+			// Creates new order single and sends to output stream
+			client.sendOrder();
+			client.fillOrder(0, -1, 100, 200);
+			client.messageHandler();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -138,6 +138,19 @@ public class SampleClient extends MockClient.Mock implements Client{
 		log.info(Thread.currentThread().getName()+" called newOrderSingleAcknowledgement for " + OrderId);
 		//do nothing, as not recording so much state in the NOS class at present
 	}
+
+	public void fillOrder(long id, long sliceId, long size, double price) throws IOException {
+		MockClient.Mock.show("fillOrder: id="+id+" sliceid="+sliceId+" size="+size+" price="+price);
+		if(omConn.isConnected()){
+			ObjectOutputStream os=new ObjectOutputStream(omConn.getOutputStream());
+			os.writeObject("fill");
+			os.writeLong(id);
+			os.writeLong(sliceId);
+			os.writeLong(size);
+			os.writeDouble(price);
+			os.flush();
+		}
+	}
 /*listen for connections
 once order manager has connected, then send and cancel orders randomly
 listen for messages from order manager and print them to stdout.*/

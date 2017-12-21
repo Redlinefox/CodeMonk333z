@@ -74,6 +74,9 @@ public class OrderManager {
 						case "newOrderSingle": 
 							newOrder(clientId, is.readInt(), (NewOrderSingle)is.readObject());
 							break;
+						case "fill":
+							newFill(is.readLong(), is.readLong(), is.readLong(), is.readDouble());
+							break;
 						//TODO create a default case which errors with "Unknown message type"+...
 						default:
 							log.error("Unknown message type for " + method);
@@ -161,12 +164,43 @@ public class OrderManager {
 	//regular code for a object stream, write/flush etc
 	private void sendOrderToTrader(long id,Order o,Object method) throws IOException{
 		ObjectOutputStream ost=new ObjectOutputStream(trader.getOutputStream());
-		log.info("hi");
 		ost.writeObject(method);
 		ost.writeLong(id);
 		ost.writeObject(o);
 		ost.flush();
 	}
+
+	private void newFill(long id,long sliceId,long size,double price) throws IOException{
+		Order o=orders.get((int) id);
+		if(sliceId > 0) {
+			try {
+				o = o.getSlices().get((int) sliceId);
+			} catch (NullPointerException e) {
+				log.error("Slice does not exist in list of orders", e);
+			}
+		}
+		o.createFill(size, price);
+		o.setOrdStatus('P');
+		if(o.sizeRemaining()==0){
+			o.setOrdStatus('F');
+		}
+		ObjectOutputStream os=new ObjectOutputStream(clients[clientId].getOutputStream());
+		os.writeObject(o);
+		os.flush();
+		sendFillToTrader(id, sliceId, size, price, TradeScreen.api.fill);
+	}
+
+	private void sendFillToTrader(long id, long sliceId, long size, double price, Object method) throws IOException {
+		ObjectOutputStream ost=new ObjectOutputStream(trader.getOutputStream());
+		ost.writeObject(method);
+		ost.writeLong(id);
+		ost.writeLong(sliceId);
+		ost.writeLong(size);
+		ost.writeDouble(price);
+		ost.flush();
+	}
+	
+	
 	
 	//sends out info about an order with output stream
 	public void acceptOrder(int id) throws IOException{
@@ -221,14 +255,7 @@ public class OrderManager {
 //
 //	}
 
-	private void newFill(long id,long sliceId,long size,double price) throws IOException{
-		Order o=orders.get((int) id);
-		o.getSlices().get((int)sliceId).createFill(size, price);
-		if(o.sizeRemaining()==0){
-			Database.write(o);
-		}
-		sendOrderToTrader(id, o, TradeScreen.api.fill);
-	}
+	
 
 	private void routeOrder(long id,long sliceId,long size,Order order) throws IOException{
 		for(Socket r:orderRouters){
